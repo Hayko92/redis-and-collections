@@ -1,0 +1,86 @@
+version: '3'
+
+networks:
+  redis-cluster-compose:
+    driver: bridge
+
+services:
+  redis-node-1:
+    image: redis:latest
+    ports:
+      - 7100:7100
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-1
+    volumes:
+      - ./7100:/redis
+    command: redis-server /redis/redis.conf
+  redis-node-2:
+    image: redis:latest
+    ports:
+      - 7101:7101
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-2
+    volumes:
+      - ./7101:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-3:
+    image: redis:latest
+    ports:
+      - 7102:7102
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-3
+    volumes:
+      - ./7102:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-4:
+    image: redis:latest
+    ports:
+      - 7103:7103
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-4
+    volumes:
+      - ./7103:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-5:
+    image: redis:latest
+    ports:
+      - 7104:7104
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-5
+    volumes:
+      - ./7104:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-6:
+    image: redis:latest
+    ports:
+      - 7105:7105
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-6
+    volumes:
+      - ./7105:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-cluster-creator:
+    image: redis:latest
+    ports:
+      - 6999:6999
+    networks:
+      - redis-cluster-compose
+    command: redis-cli -p 7000 --cluster create redis-node-1:7100 redis-node-2:7101 redis-node-3:7102 redis-node-4:7103 redis-node-5:7104 redis-node-6:7105 --cluster-replicas 1 --cluster-yes
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
