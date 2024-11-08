@@ -23,7 +23,7 @@ public class RedisMap implements Map<String, String> {
     @Override
     public int size() {
         try {
-            long size = jedisCluster.hlen(MAP_KEY);
+            var size = jedisCluster.hlen(MAP_KEY);
             return (int) size;
         } catch (Exception e) {
             log.error("Error in size(): {}", e.getMessage(), e);
@@ -82,7 +82,7 @@ public class RedisMap implements Map<String, String> {
     @Override
     public String put(String key, String value) {
         try {
-            String previousValue = jedisCluster.hget(MAP_KEY, key);
+            var previousValue = jedisCluster.hget(MAP_KEY, key);
             jedisCluster.hset(MAP_KEY, key, value);
             return previousValue;
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class RedisMap implements Map<String, String> {
     public String remove(Object key) {
         if (key instanceof String) {
             try {
-                String previousValue = jedisCluster.hget(MAP_KEY, (String) key);
+                var previousValue = jedisCluster.hget(MAP_KEY, (String) key);
                 jedisCluster.hdel(MAP_KEY, (String) key);
                 return previousValue;
             } catch (Exception e) {
